@@ -1,10 +1,12 @@
-from dateutil import parser
+import datetime as dt
 from ketchup.luffy import LUFFY
 import ketchup.day_counter as dc
 import ketchup.fun_fact as fun_fact
 
 
 def run():
+    date_format = "%Y,%m,%d"
+
     episodes = input(
         "Hello! How many episodes is the show you are interested in watching? "
     )
@@ -12,7 +14,7 @@ def run():
     end_date = input(
         "What date would you like to have completed this series?(yyyy,mm,dd) "
     )
-    end_date = parser.parse(end_date)
+    end_date = dt.datetime.strptime(end_date, date_format)
 
     answer_today = input("Will you start watching today? [Y/n] ") or "y"
     if answer_today.lower() == "y":
@@ -20,7 +22,7 @@ def run():
     else:
         start_date = input("What day will you start? (yyyy,mm,dd) ")
         # Totally trusting you to not bork the format for now lol
-        start_date = parser.parse(start_date)
+        start_date = dt.datetime.strptime(start_date, date_format)
 
     # Time to math!
 

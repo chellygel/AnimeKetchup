@@ -2,7 +2,7 @@ import datetime as dt
 import math
 
 
-def calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=None):
+def calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=None, per_week_limit=None):
     """
     There are some options on what we could return to the user:
     1. basic episodes per day
@@ -15,6 +15,7 @@ def calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=None)
     :param end_date:
     :param start_date:
     :param per_day_limit:
+    :param per_week_limit:
     :return: response dict
     """
     response = {
@@ -43,6 +44,13 @@ def calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=None)
 
         if realistic_end_date > end_date:
             # It isn't possible to watch with that limit so...
+            response["is_possible"] = False
+
+    if per_week_limit:
+        weeks_available = days_available / 7
+        eps_per_week = math.ceil(episodes / weeks_available)
+
+        if eps_per_week > per_week_limit:
             response["is_possible"] = False
 
     return response

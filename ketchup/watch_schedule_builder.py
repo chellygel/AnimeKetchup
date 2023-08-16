@@ -2,7 +2,9 @@ import datetime as dt
 import math
 
 
-def calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=None, per_week_limit=None):
+def calculate_watch_schedule(
+    episodes, end_date, start_date, per_day_limit=None, per_week_limit=None
+):
     """
     There are some options on what we could return to the user:
     1. basic episodes per day
@@ -24,7 +26,7 @@ def calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=None,
         "actual_watch_days": 0,
         "is_possible": True,
         "realistic_end_date": None,
-        "extra_episodes": None
+        "extra_episodes": None,
     }
 
     days_available = (end_date - start_date).days

@@ -1,17 +1,40 @@
 import datetime
 
-from dateutil import parser
+import dateparser
 import datetime as dt
 from ketchup.luffy import LUFFY
-import ketchup.watch_schedule_builder as dc
+import ketchup.watch_schedule_builder as wsb
 import ketchup.fun_fact as fun_fact
+
+DDP = dateparser.date.DateDataParser(languages=['en'], settings={'DATE_ORDER': 'DMY'})
+
+
+def get_date(prompt: str, require_future: bool = False, require_past: bool = False) -> datetime.datetime:
+    while True:
+        try:
+            user_date = input(prompt)
+            user_date = DDP.get_date_data(user_date).date_obj
+        except ValueError:
+            print("Sorry, please only enter a date. an example would be '10 Aug 2023' ")
+            continue
+        if require_future:
+            if user_date.date() < dt.date.today():
+                print("Sorry, please only enter a future date")
+                continue
+        if require_past:
+            if user_date.date() > dt.date.today():
+                print("Sorry, please only enter a past date")
+                continue
+        else:
+            break
+    return user_date
 
 
 def run():
     while True:
         try:
             episodes = int(input(
-                "Hello! How many episodes are in the show you are interested in watching? "
+                "Hello! How many episodes are in the show you are interested in watching?: "
             ))
         except ValueError:
             print("Sorry, please only enter a value greater than 0")
@@ -23,29 +46,17 @@ def run():
         else:
             break
 
-    while True:
-        try:
-            end_date = input(
-                "What date would you like to have completed this series?(yyyy,mm,dd) "
-            )
-            end_date = parser.parse(end_date)
-        except ValueError:
-            print("Sorry, please only enter a date. an example would be 2024,01,31")
-            continue
-        if end_date.date() < datetime.date.today():
-            print("Sorry, please only enter a future date")
-            continue
-        else:
-            break
+    end_date_prompt = "What date would you like to have completed this series?(ex: 15 Aug 2050): "
+    end_date = get_date(end_date_prompt, require_future=True)
 
-    answer_today = input("Will you start watching today? [Y/n] ") or "y"
+    answer_today = input("Will you start watching today? [Y/n]: ") or "y"
     if answer_today.lower() == "y":
         start_date = dt.datetime.today()
     else:
-        start_date = input("What day will you start? (yyyy,mm,dd) ")
-        start_date = parser.parse(start_date)
+        start_date_prompt = "What day will you start?(15 Aug 2023): "
+        start_date = get_date(start_date_prompt)
 
-    per_day_limit = input("What is the limit of episodes you will watch per day?[leave empty or a number] ")
+    per_day_limit = input("What is the limit of episodes you will watch per day? [0+] ") or 0
 
     # The following seems as though it could be better...
     # We want to set the per day limit as an integer, or None...
@@ -57,7 +68,7 @@ def run():
         per_day_limit = None
 
     # Time to math!
-    watch_schedule = dc.calculate_watch_schedule(episodes, end_date, start_date, per_day_limit)
+    watch_schedule = wsb.calculate_watch_schedule(episodes, end_date, start_date, per_day_limit)
     print(f"Wow, that's only {watch_schedule['days']} days between today and then !!!")
 
     if watch_schedule["is_possible"]:
@@ -79,7 +90,7 @@ def run():
         )
 
     ff = fun_fact.random_factoid()
-    ff_watch_schedule = dc.calculate_watch_schedule(ff[1], end_date, start_date, per_day_limit)
+    ff_watch_schedule = wsb.calculate_watch_schedule(ff[1], end_date, start_date, per_day_limit)
 
     print(
         f"In comparison you would have to watch {ff_watch_schedule['base_eps_per_day']} episodes per day if you were watching {ff[0]}!"

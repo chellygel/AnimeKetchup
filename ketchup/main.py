@@ -1,5 +1,5 @@
 import datetime
-
+import math
 import dateparser
 import datetime as dt
 from ketchup.luffy import LUFFY
@@ -62,12 +62,12 @@ def run():
         start_date_prompt = "What day will you start? (Ex: 15 Aug 2023):\n"
         start_date = get_date(start_date_prompt)
 
-    per_week_limit = int(
-        input("How many episodes a week do you plan to watch as well?:\n")
-    )
-
     per_day_limit = int(
         input("What is the limit of episodes you will watch per day? [0+]\n") or 0
+    )
+
+    days_per_week_watching = int(
+        input("How many days a week do you plan to watch?:\n")
     )
 
     # The following seems as though it could be better...
@@ -79,16 +79,20 @@ def run():
     except ValueError:
         per_day_limit = None
 
+    total_episodes_per_week = per_day_limit * days_per_week_watching
+
+    weeks_required = math.ceil(episodes / total_episodes_per_week)
+
     # Time to math!
     watch_schedule = dc.calculate_watch_schedule(
-        episodes, end_date, start_date, per_day_limit, per_week_limit
+        episodes, end_date, start_date, per_day_limit, total_episodes_per_week
     )
     print(f"Wow, that's only {watch_schedule['days']} days between today and then!")
 
     if watch_schedule["is_possible"]:
         print(
-            f"You will have to watch {watch_schedule['base_eps_per_day']} episodes per day "
-            f"to complete the show on time!"
+            f"To complete the show on time, dedicating {days_per_week_watching} days per week and watching "
+            f"{per_day_limit} episodes per day, it will take approximately {weeks_required} week(s)."
         )
         if watch_schedule["extra_episodes"]:
             print(
@@ -113,7 +117,7 @@ def run():
 
     ff = fun_fact.random_factoid()
     ff_watch_schedule = dc.calculate_watch_schedule(
-        ff[1], end_date, start_date, per_day_limit, per_week_limit
+        ff[1], end_date, start_date, per_day_limit, days_per_week_watching
     )
 
     print(

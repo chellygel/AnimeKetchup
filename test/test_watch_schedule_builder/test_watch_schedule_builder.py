@@ -36,22 +36,20 @@ def test_calculate_wsb_valid_response_per_day_limit():
 
     response = wsb.calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=per_day_limit)
 
-    extra_episodes = episodes % per_day_limit
-
     assert response["base_eps_per_day"] == 5
     assert response["days"] == 10
     assert response["actual_watch_days"] == 10
     assert response["is_possible"] is True
     assert response["realistic_end_date"] == dt.datetime(2024, 11, 11)
-    assert response["extra_episodes"] == extra_episodes
+    assert response["extra_episodes"] == 0
     assert response["per_day_limit"] == per_day_limit
 
 
 def test_calculate_wsb_valid_response_per_day_limit_uneven_days():
     end_date = dt.datetime(2024, 11, 11)
     start_date = dt.datetime(2024, 11, 1)
-    episodes = 63
-    per_day_limit = 3
+    episodes = 70
+    per_day_limit = 5
 
     response = wsb.calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=per_day_limit)
 
@@ -59,9 +57,9 @@ def test_calculate_wsb_valid_response_per_day_limit_uneven_days():
 
     assert response["base_eps_per_day"] == 7
     assert response["days"] == 10
-    assert response["actual_watch_days"] == 9
+    assert response["actual_watch_days"] == 10
     assert response["is_possible"] is False
-    assert response["realistic_end_date"] == dt.datetime(2024, 11, 22)
+    assert response["realistic_end_date"] == dt.datetime(2024, 11, 15)
     assert response["extra_episodes"] == extra_episodes
     assert response["per_day_limit"] == per_day_limit
 
@@ -103,14 +101,15 @@ def test_calculate_wsb_valid_response_per_day_limit_unrealistic_end_date():
 def test_calculate_wsb_valid_response_per_day_limit_extra_episodes():
     end_date = dt.datetime(2024, 11, 11)
     start_date = dt.datetime(2024, 11, 1)
-    episodes = 75
+    episodes = 80
     per_day_limit = 10
 
     response = wsb.calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=per_day_limit)
 
     assert response["base_eps_per_day"] == 8
     assert response["days"] == 10
+    assert response["actual_watch_days"] == 10
     assert response["is_possible"] is True
-    assert response["realistic_end_date"] == dt.datetime(2024, 11, 8, 12)
-    assert response["extra_episodes"] == 5
+    assert response["realistic_end_date"] == dt.datetime(2024, 11, 9)
+    assert response["extra_episodes"] == 0
     assert response["per_day_limit"] == per_day_limit

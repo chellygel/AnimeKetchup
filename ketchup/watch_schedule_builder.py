@@ -24,7 +24,6 @@ def calculate_watch_schedule(episodes, end_date, start_date, per_day_limit=None)
         "is_possible": True,
         "realistic_end_date": None,
         "extra_episodes": None,
-        "per_day_limit": per_day_limit,
     }
 
     days_available = (end_date - start_date).days

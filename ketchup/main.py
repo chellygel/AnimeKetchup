@@ -202,7 +202,7 @@ def run():
                 weeks=weeks_required_alternative)
 
             print(f"To watch {episodes} episodes at a rate of {per_week_limit} "
-                  f"episodes per week, you should finish by "
+                  f"days per week, you should finish by "
                   f"{realistic_end_date.strftime('%d %b %Y')}.\n")
             #  The realistic_end_date is considering only two episodes per week
             #  being watched by the user.

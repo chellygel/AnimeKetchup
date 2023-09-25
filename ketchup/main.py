@@ -4,9 +4,6 @@ import dateparser
 import datetime as dt
 import ketchup.watch_schedule_builder as wsb
 
-# from ketchup.luffy import LUFFY
-# import ketchup.fun_fact as fun_fact
-
 DDP = dateparser.date.DateDataParser(
     languages=["en"], settings={"DATE_ORDER": "DMY"})
 
@@ -35,13 +32,29 @@ def get_date(
     return user_date
 
 
-def calculate_episodes_from_hours(episodes, episode_duration_mins=24):
+def calculate_watch_length_in_time(episodes, episode_duration_mins=24):
+
+    """
+    This function is calculating the overall watch length of the show, by
+    determining the amount of hours it will take from the episode amount
+    which has been assigned. So, depending on the duration of the episode,
+    you can about watch three episodes within an hour, if the episode duration
+    is set to the default duration.
+    """
+
+    # This is processing how many total hours it is going to take to finish
+    # watching the desired amount of episodes. It multiplies the amount of
+    # episodes the user wishes to watch, by the episode_duration_mins that has
+    # been defaulted to 24 minutes, and then that is divided by "60" for the
+    # amount of minutes in an hour.
+
     total_hours = (episodes * episode_duration_mins) / 60
-    days = int(total_hours // 24)
-    hours = int(total_hours % 24)
+    days = int(total_hours // episode_duration_mins)
+    hours = int(total_hours % episode_duration_mins)
     return days, hours
 
 
+#TODO: Remove most of the logic from this func, separate into separate files.
 def run():
     print("Hello and welcome to AnimeKetchup "
           "for all your episode catch-up needs!")
@@ -228,4 +241,4 @@ def run():
             "Would you like to choose another option? (Y/N): ").lower()
         if another_option != "y":
             print("Thank you for using AnimeKetchup. Goodbye!")
-            break
+        break

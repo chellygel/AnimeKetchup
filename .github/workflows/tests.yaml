@@ -11,8 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
       - uses: actions/checkout@v2
 
       - name: Set up Python 3.x
@@ -22,4 +22,3 @@ jobs:
 
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-        

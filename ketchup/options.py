@@ -36,6 +36,8 @@ def calc_eps_per_day(total_eps, avail_days, eps_per_day_limit=None):
         return total_eps / avail_days
 
 
+# TODO: Pull out these last two functions as a separate pull request.
+
 #  entry point function??
 def calc_all(
         total_eps,

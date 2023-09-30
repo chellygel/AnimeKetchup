@@ -5,7 +5,7 @@ This file needs to be renamed, possibly to math-utils.py, or something more to
 reflect its usage.
 
 - Used to create mathematical functions and logic.
-- Used to create an option generator, to be called by main.py instead.
+- Used to create an option generator, to     be called by main.py instead.
 """
 
 

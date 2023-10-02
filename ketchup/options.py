@@ -9,6 +9,13 @@ reflect its usage.
 """
 
 
+def calculate_episodes_from_hours(episodes, episode_duration_mins=24):
+    total_hours = (episodes * episode_duration_mins) / 60
+    days = int(total_hours // 24)
+    hours = int(total_hours % 24)
+    return days, hours
+
+
 # Option 0 in Discord.
 def calc_watch_time_hrs(total_eps, episode_length_mins):
     overall_watch_time = int(total_eps * episode_length_mins) / 60

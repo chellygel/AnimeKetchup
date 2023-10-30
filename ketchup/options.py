@@ -1,5 +1,3 @@
-from datetime import datetime as dt
-
 """
 This file needs to be renamed, possibly to math-utils.py, or something more to
 reflect its usage.
@@ -23,7 +21,6 @@ def calc_watch_time_hrs(total_eps, episode_length_mins):
 
 
 def calc_days_avail_to_watch(start_date, end_date, days_per_week_limit=None):
-
     # Calculate the difference between the end_date and the start_date.
     calc_date_diff = end_date - start_date
 
@@ -51,7 +48,6 @@ def calc_all(
         end_date,
         eps_per_day_limit=None,
         days_per_week_limit=None):
-
     #  If only total_episodes & days: call calculate_eps_per_day
     if total_eps is not None and days_until_end_date is not None:
         result = calc_eps_per_day(
@@ -90,8 +86,8 @@ def calc_all(
             days_until_end_date,
             eps_per_day_limit)
 
-        is_possible = eps_per_day_with_limits * 7 <= days_per_week_limit \
-                      and total_eps <= days_available * eps_per_day_limit
+        is_possible = (eps_per_day_with_limits * 7 <= days_per_week_limit and
+                       total_eps <= days_available * eps_per_day_limit)
 
         if is_possible:
             result = eps_per_day_with_limits

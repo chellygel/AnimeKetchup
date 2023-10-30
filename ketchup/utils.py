@@ -4,10 +4,6 @@ import datetime as dt
 DDP = dateparser.date.DateDataParser(
     languages=["en"], settings={"DATE_ORDER": "DMY"})
 
-"""
-
-"""
-
 
 def get_date(
         prompt: str, require_future: bool = False, require_past: bool = False

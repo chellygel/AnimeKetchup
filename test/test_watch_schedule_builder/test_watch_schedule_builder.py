@@ -24,7 +24,7 @@ def test_calculate_wsb_valid_response_uneven_days():
 
     assert response["base_eps_per_day"] == 6
     assert response["days"] == 10
-    assert response["actual_watch_days"] == 8.5
+    assert response["actual_watch_days"] == 10
     assert response["is_possible"] is True
     assert response["realistic_end_date"] is None
     assert response["extra_episodes"] is None

@@ -1,39 +1,15 @@
-import datetime
 import math
 import dateparser
 import datetime as dt
 import ketchup.watch_schedule_builder as wsb
+from ketchup import options as ops
+from ketchup import utils
 
 DDP = dateparser.date.DateDataParser(
     languages=["en"], settings={"DATE_ORDER": "DMY"})
 
 
-def get_date(
-        prompt: str, require_future: bool = False, require_past: bool = False
-) -> datetime.datetime:
-    while True:
-        try:
-            user_date = input(prompt)
-            user_date = DDP.get_date_data(user_date).date_obj
-        except ValueError:
-            print("Sorry, please only enter a date. "
-                  "An example would be '10 Aug 2023' ")
-            continue
-        if require_future:
-            if user_date.date() < dt.date.today():
-                print("Sorry, please only enter a future date.")
-                continue
-        if require_past:
-            if user_date.date() > dt.date.today():
-                print("Sorry, please only enter a past date.")
-                continue
-        else:
-            break
-    return user_date
-
-
 def calculate_watch_length_in_time(episodes, episode_duration_mins=24):
-
     """
     This function is calculating the overall watch length of the show, by
     determining the amount of hours it will take from the episode amount
@@ -54,21 +30,22 @@ def calculate_watch_length_in_time(episodes, episode_duration_mins=24):
     return days, hours
 
 
-#TODO: Remove most of the logic from this func, separate into separate files.
+# TODO: Remove most of the logic from this func, separate into separate files.
+# TODO: Re-add the "Watch an allotted amount of episodes per day option.
+# TODO: Re-add the "Assign both a limit to how many episodes a day you watch,
+#       as well as how many days a week you decide to watch.
 def run():
-    print("Hello and welcome to AnimeKetchup "
-          "for all your episode catch-up needs!")
+    print("\nHello and welcome to AnimeKetchup "
+          "for all your episode catch-up needs!\n")
     while True:
         try:
             user_option = int(input(
                 "Please choose an option:\n"
                 "1) Watch specified amount of episodes without any limits.\n"
-                "2) Watch an allotted amount of episodes per day.\n"
-                "3) Choose how many days per week to watch episodes.\n"
-                "4) Assign both a limit to how many episodes a day you watch, "
-                "as well as how many days a week you decide to watch.\n"
-                "5) Exit.\n"
+                "2) Choose how many days per week to watch episodes.\n"
+                "3) Exit.\n"
                 "\nEnter the number of your choice: "))
+
         except ValueError:
             print("Sorry, please enter a valid option.")
             continue
@@ -87,6 +64,13 @@ def run():
                 else:
                     break
 
+            episode_duration_len_in_mins = int(input(
+                "What is the length of the episodes within the show you are "
+                "wanting to watch?: "
+            ))
+
+            episode_duration_mins = episode_duration_len_in_mins
+
             end_date_prompt = (
                 "What date would you like to have completed this series? "
                 "(Example: 15 Aug 2050): "
@@ -97,14 +81,12 @@ def run():
 
             if answer_today.lower() == "y":
                 start_date = dt.datetime.today()
-                episode_duration_mins = 24
-                # Set the default episode duration in minutes
             else:
                 start_date_prompt = "What day will you start?" \
                                     " (Ex: 15 Aug 2023): "
-                start_date = get_date(start_date_prompt)
+                start_date = utils.get_date(start_date_prompt)
 
-            end_date = get_date(end_date_prompt, require_future=True)
+            end_date = utils.get_date(end_date_prompt, require_future=True)
 
             if end_date < start_date:
                 print("The end date cannot be before the start date. "
@@ -112,6 +94,7 @@ def run():
                 continue
 
             time_available = end_date - start_date
+
             min_hours_needed = math.ceil(episodes * episode_duration_mins / 60)
 
             if time_available.total_seconds() < min_hours_needed * 3600:
@@ -136,7 +119,7 @@ def run():
             )
 
             if watch_schedule["days"] >= 0:
-                days, hours = calculate_episodes_from_hours(
+                days, hours = ops.calculate_episodes_from_hours(
                     episodes, episode_duration_mins)
 
                 # Calculate the time difference between today and the end date
@@ -150,7 +133,7 @@ def run():
                     remainder, 60)
 
                 print(
-                    f"Wow, that's only {time_difference_days} days, "
+                    f"\nWow, that's only {time_difference_days} days, "
                     f"{time_difference_hours} hours, "
                     f"and {time_difference_minutes} "
                     f"minutes between today and then!")
@@ -165,7 +148,7 @@ def run():
                         f"To watch your desired amount of episodes, "
                         f"that will take {hours} hours.\n")
 
-        elif user_option == 3:
+        elif user_option == 2:
             while True:
                 try:
                     episodes = int(input(
@@ -206,7 +189,7 @@ def run():
             start_date_prompt = "When would like to begin watching? " \
                                 "(Example: 15 Aug 2050): "
 
-            start_date = get_date(start_date_prompt, require_future=True)
+            start_date = utils.get_date(start_date_prompt, require_future=True)
 
             realistic_end_date = start_date + dt.timedelta(
                 weeks=weeks_required)
@@ -230,15 +213,16 @@ def run():
                   f"episodes per week instead, you can finish by "
                   f"{realistic_end_date_alternative.strftime('%d %b %Y')}.\n")
 
-        elif user_option == 5:
+        elif user_option == 3:
             print("Thank you for using AnimeKetchup. Goodbye!")
             break
 
         else:
             print("Invalid option. Please choose a valid option.")
 
-        another_option = input(
-            "Would you like to choose another option? (Y/N): ").lower()
-        if another_option != "y":
-            print("Thank you for using AnimeKetchup. Goodbye!")
-        break
+            another_option = input(
+                "Would you like to choose another option? (Y/N): ").lower()
+
+            if another_option != "y":
+                print("Thank you for using AnimeKetchup. Goodbye!")
+                break  # Break the loop if the user chooses not to continue.

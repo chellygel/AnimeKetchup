@@ -44,15 +44,15 @@ def calculate_watch_schedule(
     days_available = (end_date - start_date).days
 
     if days_available == 0:
-        eps_possible = int(total_available_hours // episode_duration_hours)
-        eps_per_day = eps_possible
+        eps_possible_within_a_day = int(
+            total_available_hours // episode_duration_hours)
+        eps_per_day = eps_possible_within_a_day
     else:
-        # Calculate the number of episodes
-        # that can be watched within the available time
-        eps_possible = int(total_available_hours // episode_duration_hours)
-        eps_per_day = math.ceil(eps_possible / days_available)
+        eps_possible_within_a_day = int(
+            total_available_hours // episode_duration_hours)
+        eps_per_day = math.ceil(episodes / days_available)
 
-    actual_watch_days = math.ceil(eps_possible / eps_per_day)
+    actual_watch_days = min(eps_possible_within_a_day, days_available)
 
     response["base_eps_per_day"] = eps_per_day
     response["days"] = days_available

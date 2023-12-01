@@ -9,7 +9,7 @@ DDP = dateparser.date.DateDataParser(
     languages=["en"], settings={"DATE_ORDER": "DMY"})
 
 
-def calculate_watch_length_in_time(episodes, episode_duration_mins=24):
+def calculate_watch_length_in_time(episodes, episode_duration_mins=25):
     """
     This function is calculating the overall watch length of the show, by
     determining the amount of hours it will take from the episode amount
@@ -28,6 +28,31 @@ def calculate_watch_length_in_time(episodes, episode_duration_mins=24):
     days = int(total_hours // episode_duration_mins)
     hours = int(total_hours % episode_duration_mins)
     return days, hours
+
+
+def determine_end_and_start_date():
+    end_date_prompt = (
+        "What date would you like to have completed this series? "
+        "(Example: 15 Aug 2050): "
+    )
+
+    answer_today = input(
+        "Will you start watching today? [Y/N]: ") or "y"
+
+    if answer_today.lower() == "y":
+        start_date = dt.datetime.today()
+    else:
+        start_date_prompt = "What day will you start?" \
+                            " (Ex: 15 Aug 2023): "
+        start_date = utils.get_date(start_date_prompt)
+
+    end_date = utils.get_date(end_date_prompt, require_future=True)
+
+    if end_date < start_date:
+        print("The end date cannot be before the start date. "
+              "Please provide valid dates.\n")
+
+    return answer_today, start_date, end_date
 
 
 # TODO: Remove most of the logic from this func, separate into separate files.
@@ -64,34 +89,9 @@ def run():
                 else:
                     break
 
-            episode_duration_len_in_mins = int(input(
-                "What is the length of the episodes within the show you are "
-                "wanting to watch?: "
-            ))
+            episode_duration_mins = 25
 
-            episode_duration_mins = episode_duration_len_in_mins
-
-            end_date_prompt = (
-                "What date would you like to have completed this series? "
-                "(Example: 15 Aug 2050): "
-            )
-
-            answer_today = input(
-                "Will you start watching today? [Y/N]: ") or "y"
-
-            if answer_today.lower() == "y":
-                start_date = dt.datetime.today()
-            else:
-                start_date_prompt = "What day will you start?" \
-                                    " (Ex: 15 Aug 2023): "
-                start_date = utils.get_date(start_date_prompt)
-
-            end_date = utils.get_date(end_date_prompt, require_future=True)
-
-            if end_date < start_date:
-                print("The end date cannot be before the start date. "
-                      "Please provide valid dates.\n")
-                continue
+            answer_today, start_date, end_date = determine_end_and_start_date()
 
             time_available = end_date - start_date
 
@@ -162,6 +162,8 @@ def run():
                 else:
                     break
 
+            episode_duration_mins = 25
+
             while True:
                 try:
                     per_week_limit = int(input(
@@ -179,17 +181,14 @@ def run():
                 else:
                     break
 
+            answer_today, start_date, end_date = determine_end_and_start_date()
+
             weeks_required = math.ceil(episodes / per_week_limit)
 
             episodes_per_day_alternative = 3
             episodes_per_day = episodes_per_day_alternative * per_week_limit
 
             weeks_required_alternative = math.ceil(episodes / episodes_per_day)
-
-            start_date_prompt = "When would like to begin watching? " \
-                                "(Example: 15 Aug 2050): "
-
-            start_date = utils.get_date(start_date_prompt, require_future=True)
 
             realistic_end_date = start_date + dt.timedelta(
                 weeks=weeks_required)
@@ -198,8 +197,8 @@ def run():
                 weeks=weeks_required_alternative)
 
             print(f"To watch {episodes} episodes at a rate of {per_week_limit} "
-                  f"days per week, you should finish by "
-                  f"{realistic_end_date.strftime('%d %b %Y')}.\n")
+                  f"days per week and one episode per day, you should finish by"
+                  f" {realistic_end_date.strftime('%d %b %Y')}.\n")
             #  The realistic_end_date is considering only two episodes per week
             #  being watched by the user.
 

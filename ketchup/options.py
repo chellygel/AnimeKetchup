@@ -1,9 +1,11 @@
+import math
+
 """
 This file needs to be renamed, possibly to math-utils.py, or something more to
 reflect its usage.
 
 - Used to create mathematical functions and logic.
-- Used to create an option generator, to     be called by main.py instead.
+- Used to create an option generator, to be called by main.py instead.
 """
 
 
@@ -16,16 +18,20 @@ def calculate_episodes_from_hours(episodes, episode_duration_mins=24):
 
 # Option 0 in Discord.
 def calc_watch_time_hrs(total_eps, episode_length_mins):
-    overall_watch_time = int(total_eps * episode_length_mins) / 60
+    overall_watch_time = total_eps * episode_length_mins / 60
     return overall_watch_time
 
 
-def calc_days_avail_to_watch(start_date, end_date, days_per_week_limit=None):
+def calc_days_avail_to_watch(start_date, end_date, eps_per_week_limit=None):
     # Calculate the difference between the end_date and the start_date.
     calc_date_diff = end_date - start_date
 
     # Extracts the total number of days from the timedelta "day" object.
     avail_days = calc_date_diff.days
+
+    if eps_per_week_limit:
+        weeks = math.ceil(avail_days / 7)
+        avail_days = min(weeks * eps_per_week_limit, avail_days)
 
     return avail_days
 
@@ -35,9 +41,11 @@ def calc_eps_per_day(total_eps, avail_days, eps_per_day_limit=None):
         return 0  # This avoids division by zero.
 
     if eps_per_day_limit is not None:
-        return min(total_eps / avail_days, eps_per_day_limit)
+        result = min(total_eps / avail_days, eps_per_day_limit)
     else:
-        return total_eps / avail_days
+        result = total_eps / avail_days
+
+    return math.ceil(result)
 
 
 #  entry point function??
@@ -94,10 +102,11 @@ def calc_all(
 
         else:
             # Call build_not_possible_options to generate a response of options
-            result = build_not_possible_options(
-                total_eps, days_until_end_date,
-                eps_per_day_limit,
-                days_per_week_limit)
+            result = calc_eps_per_day(
+                total_eps,
+                days_available,
+                eps_per_day_limit
+            )
 
     else:
         pass

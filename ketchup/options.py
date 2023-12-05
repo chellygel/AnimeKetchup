@@ -101,7 +101,6 @@ def calc_all(
             result = eps_per_day_with_limits
 
         else:
-            # Call build_not_possible_options to generate a response of options
             result = calc_eps_per_day(
                 total_eps,
                 days_available,

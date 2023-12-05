@@ -42,7 +42,7 @@ Here is our simple JSON structure:
 
 This formatting applies throughout these expectations.
 
-> **POST**  
+> **PUT**  
 > Update the current amount of episodes watched.
 
 We might have an API decorated method in our project called "update_user" and we can send a JSON payload in a raw format
@@ -87,3 +87,57 @@ The JSON response output we may expect for this could be:
     ]
 }
 ```
+
+### Additional Expectations
+Rather than providing the expecting JSON response for each expectation, I'll be creating these blocks 
+to help visualise what we desire going forward.
+
+> **POST**  
+> Add a new user to the database.
+
+> **GET**  
+> A user can see the items in their watchlist, their current progress, and also how many
+> episodes there are total to watch.
+
+> **DELETE**  
+> Delete an anime from the watchlist if a user has completed it.
+
+> **POST**  
+> Add a new anime to the watchlist for the user.
+
+> **PUT**  
+> When the user is expected to complete watching the anime of their choice, with
+> the permutations which they set for their schedule.
+
+> **GET**  
+> Allow the user to see how long they have remaining left, and to see if they are on
+> track with their schedule.
+
+> **PUT**  
+> User wishes to exclude the filler episodes from their watch marathon.
+
+> **GET**  
+> A tabulate table with increased formatting to display to the user.
+
+> **DELETE**  
+> Delete an anime from the watchlist if a user accidentally added it.
+
+> **POST**  
+> Add a new anime to the watchlist for the user.
+
+> **DELETE**  
+> Delete a user if they no longer wish to track their progress.
+
+> **GET**  
+> Get all the information for the anime. 
+
+> **GET**  
+> Search for an anime.
+
+> **GET**  
+> Recommend an anime.
+
+There are other expectations we might expect for ourselves too.
+
+> **GET**  
+> All the users watching the One Piece anime.

@@ -1,0 +1,5 @@
+*.idea
+__pycache__
+.python-version
+flake8_pycharm.py
+.env

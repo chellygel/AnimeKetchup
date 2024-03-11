@@ -31,10 +31,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'ak_api',
     'rest_framework',
     'rest_framework.authtoken',
     'website',
+    'ak_api',
+    'members',
 ]
 
 MIDDLEWARE = [

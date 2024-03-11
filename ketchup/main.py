@@ -60,7 +60,7 @@ def determine_end_and_start_date():
 # TODO: Re-add the "Assign both a limit to how many episodes a day you watch,
 #       as well as how many days a week you decide to watch.
 def run():
-    print("\nHello and welcome to AnimeKetchup "
+    print("\nHello and welcome to animeketchup "
           "for all your episode catch-up needs!\n")
     while True:
         try:
@@ -213,7 +213,7 @@ def run():
                   f"{realistic_end_date_alternative.strftime('%d %b %Y')}.\n")
 
         elif user_option == 3:
-            print("Thank you for using AnimeKetchup. Goodbye!")
+            print("Thank you for using animeketchup. Goodbye!")
             break
 
         else:
@@ -223,5 +223,5 @@ def run():
                 "Would you like to choose another option? (Y/N): ").lower()
 
             if another_option != "y":
-                print("Thank you for using AnimeKetchup. Goodbye!")
+                print("Thank you for using animeketchup. Goodbye!")
                 break  # Break the loop if the user chooses not to continue.

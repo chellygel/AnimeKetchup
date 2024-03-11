@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <div class="center-text">
+        <h1>login</h1>
+
+        <form action="" method="POST" class="login-form">
+
+            {% csrf_token %}
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="exampleInputEmail1" class="login-form-label">username</label>
+                    <input type="text" class="login-form-control" name="username" aria-describedby="emailHelp">
+                </div>
+                <div class="col-md-6">
+                    <label for="exampleInputPassword1" class="login-form-label">password</label>
+                    <input type="password" class="login-form-control" name="password">
+                </div>
+            </div>
+
+            <div class="login-mb-3">
+                <div id="username_help" class="login-form-text">we'll never share your email with anyone else.</div>
+            </div>
+
+            <button type="submit" class="login-btn-primary">submit</button>
+
+        </form>
+    </div>
+</section>
+{% endblock %}

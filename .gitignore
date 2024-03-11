@@ -4,3 +4,5 @@ __pycache__
 flake8_pycharm.py
 .env
 /venv
+/myenv
+/dev-env

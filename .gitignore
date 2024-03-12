@@ -6,3 +6,5 @@ flake8_pycharm.py
 /venv
 /myenv
 /dev-env
+../../.DS_Store
+db.sqlite3

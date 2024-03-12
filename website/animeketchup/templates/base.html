@@ -15,6 +15,33 @@
 </head>
 
 <body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">animeketchup</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="/">home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/anime/' %}active{% endif %}" href="/anime">anime</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/members/login_user' %}active{% endif %}" href="/members/login_user">login</a>
+                </li>
+
+            </ul>
+        </div>
+      </div>
+    </nav>
+
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-warning alert-dismissable d-flex justify-content-between" role="alert">

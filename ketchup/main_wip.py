@@ -16,7 +16,7 @@ def run():
     # an input called "filler" to remove any filler episodes from their watch.
     episode_duration_mins = 24
 
-    print("\nWelcome to AnimeKetchup, for all of your catch-up needs.\n")
+    print("\nWelcome to animeketchup, for all of your catch-up needs.\n")
 
     total_eps = int(input(
         "How many episodes would you like to watch?\n"))

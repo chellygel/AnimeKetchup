@@ -83,3 +83,34 @@ body {
 .login-col-auto {
     margin-right: 10px;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+    padding: 20px;
+}
+
+.anime-box {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    transition: transform 0.3s;
+}
+
+.anime-name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.anime-description {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.anime-box:hover {
+    background-color: #dbdbdb;
+    transform: scale(1.02);
+}

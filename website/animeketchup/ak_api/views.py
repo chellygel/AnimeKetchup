@@ -13,7 +13,7 @@ from .serializer import AnimeSerializer
 
 
 @api_view(['GET'])
-def list_anime(request):
+def json_anime_list(request):
     anime = Anime.objects.all()
     serializer = AnimeSerializer(anime, many=True)
     return Response(serializer.data)
@@ -45,3 +45,7 @@ def post_anime(request):
 
 def landing_page(request):
     return render(request, 'landing_page.html')
+
+
+def anime_list(request):
+    return render(request, 'anime_list.html')
